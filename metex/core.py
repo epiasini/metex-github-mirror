@@ -17,7 +17,10 @@ class Texture():
         self.theta3 = theta3
         self.alpha = alpha
 
-        if sum([param is not None for param in self._get_param_list()]) > 1:
+        n_nonzero_params = sum([param is not None for param in self._get_param_list()])
+        if n_nonzero_params == 0:
+            self.gamma = 0
+        elif n_nonzero_params > 1:
             raise NotImplementedError()
 
 
@@ -34,11 +37,19 @@ class Texture():
         param_id = [p is not None for p in self._get_param_list()].index(True)
 
         if param_id==0:
-            this_sample = self._sample_one_parameter_gamma()
+            this_sample = self._sample_gamma()
         elif param_id<=4:
-            this_sample = self._sample_one_parameter_beta(beta=self._get_param_list()[param_id])
-            if param_id==2:
-                this_sample = this_sample.T
+            beta = self._get_param_list()[param_id]
+            if param_id in [1,2]:
+                this_sample = self._sample_beta_horizontal(beta)
+                if param_id==2:
+                    this_sample = this_sample.T
+            if param_id in [3,4]:
+                this_sample = self._sample_beta_diagonal(beta)
+                if param_id==4:
+                    this_sample = this_sample[:,::-1]
+            return this_sample
+                
             # TODO: rotate if needed
         elif param_id<=7:
             this_sample = self._sample_one_parameter_theta()
@@ -48,24 +59,33 @@ class Texture():
             
         return this_sample
 
-    def _sample_one_parameter_gamma(self):
+    def _sample_gamma(self):
         sample = np.random.rand(self.L, self.L)
         return sample < (1+self.gamma)/2
 
-    def _sample_one_parameter_beta(self, beta, L=None):
-        if L is None:
-            L = self.L
-            
-        sample = np.random.randint(2, size=(L,1)).astype(np.bool)
-        for j in range(1,L):
+    def _sample_beta_horizontal(self, beta):
+        sample = np.random.randint(2, size=(self.L,1)).astype(np.bool)
+        for j in range(1, self.L):
             # the parity array tells us if the number of ones in a
             # given glider is even (in which case the corresponding
             # value of parity is False) or odd (in which case it's
             # True)
             parity = np.random.rand(self.L, 1) > (1 + beta)/2
-            sample = np.concatenate((sample, np.logical_xor(sample[:,j-1].reshape(L,1),parity)), axis=1)
-
+            new_column = np.logical_xor(sample[:,j-1].reshape(self.L,1),parity)
+            sample = np.concatenate((sample, new_column), axis=1)
         return sample
+
+    def _sample_beta_diagonal(self, beta):
+        # generate sample for beta_\
+        sample = np.random.randint(2, size=(self.L,1)).astype(np.bool)
+        for j in range(1, self.L):
+            parity = np.random.rand(self.L-1, 1) > (1 + beta)/2
+            new_column = np.zeros((self.L,1), dtype=np.bool)
+            new_column[0] = np.random.randint(2) # elements of the first row do not complete any glider, hence they are always generated randomly
+            new_column[1:] = np.logical_xor(sample[:-1,j-1].reshape(self.L-1,1),parity)
+            sample = np.concatenate((sample, new_column), axis=1)
+        return sample
+            
         
     def _get_param_list(self):
         return [self.gamma, self.beta1, self.beta2, self.beta3, self.beta4,
