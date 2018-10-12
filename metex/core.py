@@ -36,9 +36,11 @@ class Texture():
         if param_id==0:
             this_sample = self._sample_one_parameter_gamma()
         elif param_id<=4:
-            this_sample = self._sample_one_parameter_beta()
+            this_sample = self._sample_one_parameter_beta(beta=self._get_param_list()[param_id])
+            # TODO: rotate if needed
         elif param_id<=7:
             this_sample = self._sample_one_parameter_theta()
+            # TODO: rotate if needed
         else:
             this_sample = self._sample_one_parameter_alpha()
             
@@ -47,6 +49,21 @@ class Texture():
     def _sample_one_parameter_gamma(self):
         sample = np.random.rand(self.L, self.L)
         return sample < (1+self.gamma)/2
+
+    def _sample_one_parameter_beta(self, beta, L=None):
+        if L is None:
+            L = self.L
+            
+        sample = np.random.randint(2, size=(L,1)).astype(np.bool)
+        for j in range(1,L):
+            # the parity array tells us if the number of ones in a
+            # given glider is even (in which case the corresponding
+            # value of parity is False) or odd (in which case it's
+            # True)
+            parity = np.random.rand(self.L, 1) > (1 + beta)/2
+            sample = np.concatenate((sample, np.logical_xor(sample[:,j-1].reshape(L,1),parity)), axis=1)
+
+        return sample
         
     def _get_param_list(self):
         return [self.gamma, self.beta1, self.beta2, self.beta3, self.beta4,
