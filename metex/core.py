@@ -98,6 +98,15 @@ class Texture():
                 parity = np.random.rand() > (1+theta)/2
                 sample[i,j] = sample[i,j-1] ^ sample[i-1,j] ^ parity
         return sample
+
+    def _sample_alpha(self):
+        sample = np.random.randint(2, size=(self.L,self.L)).astype(np.bool)
+        for j in range(1, self.L):
+            for i in range(1, self.L):
+                parity = np.random.rand() > (1+self.alpha)/2
+                sample[i,j] = sample[i,j-1] ^ sample[i-1,j-1] ^ sample[i-1,j] ^ parity
+        return sample
+
         
     def _get_param_list(self):
         return [self.gamma, self.beta1, self.beta2, self.beta3, self.beta4,
