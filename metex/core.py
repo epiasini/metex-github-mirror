@@ -37,6 +37,8 @@ class Texture():
             this_sample = self._sample_one_parameter_gamma()
         elif param_id<=4:
             this_sample = self._sample_one_parameter_beta(beta=self._get_param_list()[param_id])
+            if param_id==2:
+                this_sample = this_sample.T
             # TODO: rotate if needed
         elif param_id<=7:
             this_sample = self._sample_one_parameter_theta()
