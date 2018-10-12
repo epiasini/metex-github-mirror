@@ -24,7 +24,7 @@ class Texture():
         
     def sample(self):
         this_sample = self._sample_one_parameter()
-        return this_sample
+        return TextureSample(this_sample)
 
     def _sample_one_parameter(self):
         """Sample an ensemble specified by a single parameter"""
@@ -51,3 +51,28 @@ class Texture():
     def _get_param_list(self):
         return [self.gamma, self.beta1, self.beta2, self.beta3, self.beta4,
                 self.theta1, self.theta2, self.theta3, self.alpha]
+
+
+class TextureSample(np.ndarray):
+
+    def __new__(cls, input_array):
+        # Input array is an already formed ndarray instance
+        # We first cast to be our class type
+        obj = np.asarray(input_array).view(cls)
+        # Finally, we must return the newly created object:
+        return obj
+
+    def __array_finalize__(self, obj):
+        # see InfoArray.__array_finalize__ for comments
+        if obj is None: return
+
+    def __str__(self):
+        character_conversion = np.where(self, '⬛', '⬜')
+        string = ''
+        for i,row in enumerate(character_conversion):
+            string = '\n'.join((string, ''.join(row)))
+        return string
+
+    
+
+        
