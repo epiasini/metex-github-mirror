@@ -49,13 +49,17 @@ class Texture():
                 if param_id==4:
                     this_sample = this_sample[:,::-1]
             return this_sample
-                
-            # TODO: rotate if needed
         elif param_id<=7:
-            this_sample = self._sample_one_parameter_theta()
-            # TODO: rotate if needed
+            theta = self._get_param_list()[param_id]
+            this_sample = self._sample_theta(theta)
+            if param_id==6:
+                # this is the case theta◤
+                this_sample = this_sample[::-1,::-1]
+            if param_id==7:
+                # this is theta◥
+                this_sample = this_sample[::-1,:]
         else:
-            this_sample = self._sample_one_parameter_alpha()
+            this_sample = self._sample_alpha()
             
         return this_sample
 
@@ -76,7 +80,7 @@ class Texture():
         return sample
 
     def _sample_beta_diagonal(self, beta):
-        # generate sample for beta_\
+        """Generate sample for beta\ """
         sample = np.random.randint(2, size=(self.L,1)).astype(np.bool)
         for j in range(1, self.L):
             parity = np.random.rand(self.L-1, 1) > (1 + beta)/2
@@ -85,7 +89,15 @@ class Texture():
             new_column[1:] = np.logical_xor(sample[:-1,j-1].reshape(self.L-1,1),parity)
             sample = np.concatenate((sample, new_column), axis=1)
         return sample
-            
+
+    def _sample_theta(self, theta):
+        """Generate sample for theta◿"""
+        sample = np.random.randint(2, size=(self.L,self.L)).astype(np.bool)
+        for j in range(1, self.L):
+            for i in range(1, self.L):
+                parity = np.random.rand() > (1+theta)/2
+                sample[i,j] = sample[i,j-1] ^ sample[i-1,j] ^ parity
+        return sample
         
     def _get_param_list(self):
         return [self.gamma, self.beta1, self.beta2, self.beta3, self.beta4,
