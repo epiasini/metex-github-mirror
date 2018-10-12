@@ -67,7 +67,7 @@ class TextureSample(np.ndarray):
         if obj is None: return
 
     def __str__(self):
-        character_conversion = np.where(self, '⬛', '⬜')
+        character_conversion = np.where(self, '⬜', '⬛')
         string = ''
         for i,row in enumerate(character_conversion):
             string = '\n'.join((string, ''.join(row)))
