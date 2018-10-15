@@ -1,4 +1,7 @@
+import os.path
 import numpy as np
+from matplotlib import pyplot as plt
+
 import logging
 
 class Texture():
@@ -28,6 +31,11 @@ class Texture():
     def sample(self):
         this_sample = self._sample_one_parameter()
         return TextureSample(this_sample)
+
+    def generate_sample_batch(self, n_samples, folder, prefix='', *args, **kwargs):
+        for n in range(n_samples):
+            s = self.sample()
+            s.saveplot(fname='{}_{}.png'.format(os.path.join(folder, prefix), n))
 
     def _sample_one_parameter(self):
         """Sample an ensemble specified by a single parameter"""
@@ -123,6 +131,8 @@ class TextureSample(np.ndarray):
         return obj
 
     def __array_finalize__(self, obj):
+        assert self.shape[0] == self.shape[1] # make sure texture is square
+        self.L = self.shape[0]
         # see InfoArray.__array_finalize__ for comments
         if obj is None: return
 
@@ -132,6 +142,40 @@ class TextureSample(np.ndarray):
         for i,row in enumerate(character_conversion):
             string = '\n'.join((string, ''.join(row)))
         return string
+
+    def plot(self, ax=None, figsize=(10,10)):
+        if ax is None:
+            fig = plt.figure(figsize=figsize)
+            ax = plt.Axes(fig, [0, 0, 1, 1])
+            fig.add_axes(ax)
+            
+        ax.imshow(self, interpolation='None', cmap='binary_r')
+        ax.axis('off')
+
+        return fig, ax
+
+    def saveplot(self, fname, resolution=3000):
+        """Save texture sample to png file on disk.
+
+        resolution is the number of total pixels per side of the image
+        (i.e. the image will be saved at resolution x resolution
+        pixels).
+
+        """
+        if plt.rcParams['interactive']:
+            was_interactive = True
+            plt.ioff()
+        else:
+            was_interactive = False
+
+        fig, ax = self.plot(figsize=(1,1))
+        fig.savefig(fname, dpi=resolution)
+        plt.close(fig)
+
+        if was_interactive:
+            plt.ion()
+    
+
 
     
 
