@@ -23,6 +23,12 @@ should also install a script called `metex` to your regular `PATH`.
 
 ## Usage
 
+Generate one sample of a fully random, square 10x10 texture, which
+will be saved to the current folder as '0.png':
+```bash
+metex 10
+```
+
 Save 10 samples of a 100x150 texture in folder named 'fig', with
 parameter 'alpha' set to -0.6. Name each sample 'fig_[n].jpg', where
 [n] takes on values 0,...,9:
@@ -31,7 +37,7 @@ parameter 'alpha' set to -0.6. Name each sample 'fig_[n].jpg', where
 metex --folder=fig --prefix=fig_ --n_samples=10 --alpha=-0.6 100 150
 ```
 
-## Documentation
+For more information on the command line parameters,
 ```bash
 metex --help
 ```
