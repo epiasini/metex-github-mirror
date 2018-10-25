@@ -16,14 +16,16 @@ with open(os.path.join(here, NAME, VERSION_FILE)) as version_file:
     VERSION = version_file.read().strip()
 
 # get long description from README
-with codecs.open(os.path.join(here, "README.rst"), encoding="utf-8") as f:
-    LONG_DESCRIPTION = f.read()
+#with codecs.open(os.path.join(here, "README.rst"), encoding="utf-8") as f:
+#    LONG_DESCRIPTION = f.read()
+## NOTE: the above to be un-commented, and the readme converted back
+## to rst, when releasing on PyPI
 
 setup (name=NAME,
        version=VERSION,
        url="https://gitlab.com/epiasini/metex",
        description="Maximum Entropy Textures",
-       long_description=LONG_DESCRIPTION,
+       #long_description=LONG_DESCRIPTION,
        install_requires=INSTALL_REQUIRES,
        author="Eugenio Piasini",
        author_email="eugenio.piasini@gmail.com",
@@ -31,9 +33,8 @@ setup (name=NAME,
        classifiers=[
            "Development Status :: 3 - Alpha",
            "Intended Audience :: Science/Research",
-           "Topic :: Scientific/Engineering :: Information Analysis",
+           "Topic :: Scientific/Engineering",
            "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"
-           "Programming Language :: Python :: 2.7",
            "Programming Language :: Python :: 3"
        ],
        packages=["metex",
