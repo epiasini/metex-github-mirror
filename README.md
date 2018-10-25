@@ -13,7 +13,7 @@ according to [Victor and Conte 2012](https://doi.org/10.1364/JOSAA.29.001313).
 
 ```bash
 cd /home/username/src
-git clone git@gitlab.com:epiasini/metex.git
+git clone https://gitlab.com/epiasini/metex.git
 cd metex
 python3 setup.py install --user
 ```
@@ -33,6 +33,6 @@ metex --folder=fig --prefix=fig_ --n_samples=10 --alpha=-0.6 100 150
 
 ## Documentation
 ```bash
-   metex --help
+metex --help
 ```
 (also see `metex/core.py`).
