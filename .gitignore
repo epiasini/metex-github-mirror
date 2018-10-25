@@ -1,2 +1,4 @@
 *.pyc
 metex.egg-info
+build
+dist
