@@ -8,12 +8,12 @@ from metex.core import Texture
 
 parser = argparse.ArgumentParser(description="Generate maximum entropy textures")
 
-parser.add_argument('L', metavar='L', type=int, help='Texture size')
-parser.add_argument('--log', type=str, help='Logging level', default='info',
+parser.add_argument('height', metavar='height', type=int, help='Texture height (in blocks)')
+parser.add_argument('width', metavar='width', type=int, help='Texture width (in blocks). Default: same as height.', nargs='?')
+parser.add_argument('--log', type=str, help='Logging level', default='warning',
                     choices=['debug', 'info', 'warning', 'error', 'critical'])
 
 args = parser.parse_args()
-
 
 # set up logging level according to that specified by the program
 # arguments
@@ -21,5 +21,5 @@ numeric_loglevel = getattr(logging, args.log.upper(), None)
 logging.basicConfig(level=numeric_loglevel, format='%(asctime)s:%(levelname)s: %(message)s')
 
 
-t = Texture(L=args.L, gamma=0.5)
+t = Texture(height=args.height, width=args.width, gamma=0.5)
 print(t.sample())

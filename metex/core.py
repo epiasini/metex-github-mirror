@@ -10,6 +10,7 @@ class Texture():
 
         self.height = height
         if width is None:
+            logging.info('only one dimension was specified. Defining a square texture.')
             self.width = height
         else:
             self.width = width
