@@ -5,10 +5,14 @@ from matplotlib import pyplot as plt
 import logging
 
 class Texture():
-    def __init__(self, L, gamma=None, beta1=None, beta2=None, beta3=None, beta4=None,
+    def __init__(self, height, width=None, gamma=None, beta1=None, beta2=None, beta3=None, beta4=None,
                  theta1=None, theta2=None, theta3=None, alpha=None):
 
-        self.L = L
+        self.height = height
+        if width is None:
+            self.width = height
+        else:
+            self.width = width
         
         self.gamma = gamma
         self.beta1 = beta1
@@ -72,45 +76,45 @@ class Texture():
         return this_sample
 
     def _sample_gamma(self):
-        sample = np.random.rand(self.L, self.L)
+        sample = np.random.rand(self.height, self.width)
         return sample < (1+self.gamma)/2
 
     def _sample_beta_horizontal(self, beta):
-        sample = np.random.randint(2, size=(self.L,1)).astype(np.bool)
-        for j in range(1, self.L):
+        sample = np.random.randint(2, size=(self.height,1)).astype(np.bool)
+        for j in range(1, self.width):
             # the parity array tells us if the number of ones in a
             # given glider is even (in which case the corresponding
             # value of parity is False) or odd (in which case it's
             # True)
-            parity = np.random.rand(self.L, 1) > (1 + beta)/2
-            new_column = np.logical_xor(sample[:,j-1].reshape(self.L,1),parity)
+            parity = np.random.rand(self.height, 1) > (1 + beta)/2
+            new_column = np.logical_xor(sample[:,j-1].reshape(self.height,1),parity)
             sample = np.concatenate((sample, new_column), axis=1)
         return sample
 
     def _sample_beta_diagonal(self, beta):
         """Generate sample for beta\ """
-        sample = np.random.randint(2, size=(self.L,1)).astype(np.bool)
-        for j in range(1, self.L):
-            parity = np.random.rand(self.L-1, 1) > (1 + beta)/2
-            new_column = np.zeros((self.L,1), dtype=np.bool)
+        sample = np.random.randint(2, size=(self.height,1)).astype(np.bool)
+        for j in range(1, self.width):
+            parity = np.random.rand(self.height-1, 1) > (1 + beta)/2
+            new_column = np.zeros((self.height,1), dtype=np.bool)
             new_column[0] = np.random.randint(2) # elements of the first row do not complete any glider, hence they are always generated randomly
-            new_column[1:] = np.logical_xor(sample[:-1,j-1].reshape(self.L-1,1),parity)
+            new_column[1:] = np.logical_xor(sample[:-1,j-1].reshape(self.height-1,1),parity)
             sample = np.concatenate((sample, new_column), axis=1)
         return sample
 
     def _sample_theta(self, theta):
         """Generate sample for theta◿"""
-        sample = np.random.randint(2, size=(self.L,self.L)).astype(np.bool)
-        for j in range(1, self.L):
-            for i in range(1, self.L):
+        sample = np.random.randint(2, size=(self.height,self.width)).astype(np.bool)
+        for j in range(1, self.width):
+            for i in range(1, self.height):
                 parity = np.random.rand() > (1+theta)/2
                 sample[i,j] = sample[i,j-1] ^ sample[i-1,j] ^ parity
         return sample
 
     def _sample_alpha(self):
-        sample = np.random.randint(2, size=(self.L,self.L)).astype(np.bool)
-        for j in range(1, self.L):
-            for i in range(1, self.L):
+        sample = np.random.randint(2, size=(self.height,self.width)).astype(np.bool)
+        for j in range(1, self.width):
+            for i in range(1, self.height):
                 parity = np.random.rand() > (1+self.alpha)/2
                 sample[i,j] = sample[i,j-1] ^ sample[i-1,j-1] ^ sample[i-1,j] ^ parity
         return sample
@@ -131,10 +135,10 @@ class TextureSample(np.ndarray):
         return obj
 
     def __array_finalize__(self, obj):
-        assert self.shape[0] == self.shape[1] # make sure texture is square
-        self.L = self.shape[0]
+        self.proportions = self.shape[1]/self.shape[0]
         # see InfoArray.__array_finalize__ for comments
         if obj is None: return
+        
 
     def __str__(self):
         character_conversion = np.where(self, '⬜', '⬛')
@@ -143,10 +147,12 @@ class TextureSample(np.ndarray):
             string = '\n'.join((string, ''.join(row)))
         return string
 
-    def plot(self, ax=None, figsize=(10,10)):
+    def plot(self, ax=None, figsize=None):
         if ax is None:
+            if figsize is None:
+                figsize = (10*self.proportions, 10) # note this is (width, height), while in the rest of the code we typically put height before width
             fig = plt.figure(figsize=figsize)
-            ax = plt.Axes(fig, [0, 0, 1, 1])
+            ax = plt.Axes(fig, [0, 0, 1, 1]) # note that this is [left, bottom, with, height]
             fig.add_axes(ax)
             
         ax.imshow(self, interpolation='None', cmap='binary_r')
@@ -168,7 +174,7 @@ class TextureSample(np.ndarray):
         else:
             was_interactive = False
 
-        fig, ax = self.plot(figsize=(1,1))
+        fig, ax = self.plot(figsize=(self.proportions, 1))
         fig.savefig(fname, dpi=resolution)
         plt.close(fig)
 
