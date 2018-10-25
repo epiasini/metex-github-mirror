@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import logging
 import argparse
 
@@ -10,16 +10,39 @@ parser = argparse.ArgumentParser(description="Generate maximum entropy textures"
 
 parser.add_argument('height', metavar='height', type=int, help='Texture height (in blocks)')
 parser.add_argument('width', metavar='width', type=int, help='Texture width (in blocks). Default: same as height.', nargs='?')
+
+parser.add_argument('--folder', metavar='folder', type=str, help='Folder where generated images will be saved', default='')
+parser.add_argument('--n_samples', metavar='n_samples', type=int, help='Number of samples to generate', default=1)
+parser.add_argument('--resolution', metavar='resolution', type=int, help='Resolution, specified as the number of pixels to use along the vertical axis of the image. The number of pixels along the horizontal axis will then be fixed by the image proportions.', default=3000)
+parser.add_argument('--prefix', metavar='prefix', type=str, help='Prefix to append to generated image filenames', default='')
+
+
 parser.add_argument('--log', type=str, help='Logging level', default='warning',
                     choices=['debug', 'info', 'warning', 'error', 'critical'])
 
+
+parser.add_argument('--gamma', metavar='gamma', type=float, nargs='?')
+parser.add_argument('--beta1', metavar='beta1', type=float, nargs='?')
+parser.add_argument('--beta2', metavar='beta2', type=float, nargs='?')
+parser.add_argument('--beta3', metavar='beta3', type=float, nargs='?')
+parser.add_argument('--beta4', metavar='beta4', type=float, nargs='?')
+parser.add_argument('--theta1', metavar='theta1', type=float, nargs='?')
+parser.add_argument('--theta2', metavar='theta2', type=float, nargs='?')
+parser.add_argument('--theta3', metavar='theta3', type=float, nargs='?')
+parser.add_argument('--alpha', metavar='alpha', type=float, nargs='?')
+
 args = parser.parse_args()
 
-# set up logging level according to that specified by the program
-# arguments
+# set up logging level
 numeric_loglevel = getattr(logging, args.log.upper(), None)
 logging.basicConfig(level=numeric_loglevel, format='%(asctime)s:%(levelname)s: %(message)s')
 
 
-t = Texture(height=args.height, width=args.width, gamma=0.5)
-print(t.sample())
+texture = Texture(height=args.height, width=args.width,
+                  gamma=args.gamma, beta1=args.beta1, beta2=args.beta2,
+                  beta3=args.beta3, beta4=args.beta4, theta1=args.theta1,
+                  theta2=args.theta2, theta3=args.theta3, alpha=args.alpha)
+
+texture.generate_sample_batch(n_samples=args.n_samples,
+                              folder=args.folder, prefix=args.prefix,
+                              resolution=args.resolution)

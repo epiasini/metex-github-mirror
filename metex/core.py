@@ -40,7 +40,7 @@ class Texture():
     def generate_sample_batch(self, n_samples, folder, prefix='', *args, **kwargs):
         for n in range(n_samples):
             s = self.sample()
-            s.saveplot(fname='{}_{}.png'.format(os.path.join(folder, prefix), n))
+            s.saveplot(fname='{}{}.png'.format(os.path.join(folder, prefix), n))
 
     def _sample_one_parameter(self):
         """Sample an ensemble specified by a single parameter"""

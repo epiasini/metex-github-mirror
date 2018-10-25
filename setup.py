@@ -38,5 +38,6 @@ setup (name=NAME,
        ],
        packages=["metex",
                  "metex.test"],
+       scripts=["scripts/metex"],
        test_suite="metex.test",
        data_files=[(NAME, [os.path.join(NAME,VERSION_FILE)])])
