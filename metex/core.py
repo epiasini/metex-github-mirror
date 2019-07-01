@@ -156,7 +156,7 @@ class TextureSample(np.ndarray):
             ax = plt.Axes(fig, [0, 0, 1, 1]) # note that this is [left, bottom, with, height]
             fig.add_axes(ax)
             
-        ax.imshow(self, interpolation='None', cmap='binary_r')
+        ax.imshow(self, interpolation='None', cmap='binary_r', vmin=0, vmax=1)
         ax.axis('off')
 
         return fig, ax

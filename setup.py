@@ -7,7 +7,7 @@ import codecs
 
 NAME = 'metex'
 VERSION_FILE = 'VERSION'
-INSTALL_REQUIRES = ['numpy']
+INSTALL_REQUIRES = ['numpy', 'matplotlib']
 
 here = os.path.abspath(os.path.dirname(__file__))
 
