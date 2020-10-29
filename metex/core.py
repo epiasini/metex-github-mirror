@@ -127,21 +127,38 @@ class Texture():
 
 
 class TextureSample(np.ndarray):
+    """Maximum entropy texture sample
+
+    This is implemented as a subclass of ndarray - see
+    https://numpy.org/doc/stable/user/basics.subclassing.html for the
+    technical details.
+
+    """
 
     def __new__(cls, input_array):
-        # Input array is an already formed ndarray instance
-        # We first cast to be our class type
+        # Input array is an ndarray instance
+        
+        # Cast to be our class type
         obj = np.asarray(input_array).view(cls)
-        # Finally, we must return the newly created object:
+
+        # Add any attributes specific to our class
+
+        # Return the newly created object
         return obj
 
     def __array_finalize__(self, obj):
-        self.proportions = self.shape[1]/self.shape[0]
-        # see InfoArray.__array_finalize__ for comments
-        if obj is None: return
-        
+        if obj.ndim == 2:
+            self.proportions = obj.shape[1]/obj.shape[0]
+        else:
+            self.proportions = None
 
     def __str__(self):
+        """Standard method for string representation
+
+        Note that Unicode characters are used to support
+        pretty-printing of the texture, even in the terminal.
+
+        """
         character_conversion = np.where(self, '⬜', '⬛')
         string = ''
         for i,row in enumerate(character_conversion):

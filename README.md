@@ -15,7 +15,7 @@ according to [Victor and Conte 2012](https://doi.org/10.1364/JOSAA.29.001313).
 cd /home/username/src
 git clone https://gitlab.com/epiasini/metex.git
 cd metex
-python3 setup.py install --user
+pip install .
 ```
 
 This should install the `metex` package on your `PYTHONPATH` and
