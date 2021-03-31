@@ -13,20 +13,20 @@ as a Python package to generate and manipulate textures.
 ## Requirements
 
 * Python 3
-* numpy
+* numpy ≥ 1.7
 * matplotlib
 
 ## Installation
+To install the latest release, run:
 
 ```bash
-cd /home/username/src
-git clone https://gitlab.com/epiasini/metex.git
-cd metex
-pip install .
+pip install metex
 ```
+(depending on your system, you may need to use `pip3` instead of `pip`
+in the command above).
 
-This should install the `metex` package on your `PYTHONPATH` and
-should also install a script called `metex` to your regular `PATH`.
+This should install the `metex` package on your `PYTHONPATH`, as well
+as an executable script called `metex` to your regular `PATH`.
 
 ### Testing
 (requires `setuptools`). If `metex` is already installed on your

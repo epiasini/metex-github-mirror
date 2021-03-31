@@ -5,7 +5,7 @@ The format is based on [Keep a
 Changelog](https://keepachangelog.com/en/1.0.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [1.0.0] - 2021-03-31
 ### Added
 - This changelog.
 - Basic unit tests for the library interface in
@@ -22,5 +22,3 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 - Renamed COPYING to LICENSE to better adhere to standard practice for
   python packages.
-
-
