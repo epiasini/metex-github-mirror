@@ -2,3 +2,4 @@
 metex.egg-info
 build
 dist
+/.tox/
