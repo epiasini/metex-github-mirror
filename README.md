@@ -1,4 +1,6 @@
 # Metex - Maximum Entropy TEXtures
+[![License](https://img.shields.io/pypi/l/metex)](https://www.gnu.org/licenses/gpl-3.0.txt)
+[![PyPI version](https://img.shields.io/pypi/v/metex.svg)](https://pypi.python.org/pypi/metex/)
 [![Build status](https://img.shields.io/gitlab/pipeline/epiasini/metex)](https://gitlab.com/epiasini/metex/pipelines)
 
 Utilities for generating **m**aximum **e**ntropy **tex**tures,
