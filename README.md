@@ -1,7 +1,12 @@
-# metex
+# Metex - Maximum Entropy TEXtures
+[![Build status](https://img.shields.io/gitlab/pipeline/epiasini/metex)](https://gitlab.com/epiasini/metex/pipelines)
 
 Utilities for generating **m**aximum **e**ntropy **tex**tures,
-according to [Victor and Conte 2012](https://doi.org/10.1364/JOSAA.29.001313).
+according to [Victor and Conte
+2012](https://doi.org/10.1364/JOSAA.29.001313).
+
+Metex can be used as a standalone software from the command line, or
+as a Python package to generate and manipulate textures.
 
 ## Requirements
 
@@ -20,6 +25,17 @@ pip install .
 
 This should install the `metex` package on your `PYTHONPATH` and
 should also install a script called `metex` to your regular `PATH`.
+
+### Testing
+(requires `setuptools`). If `metex` is already installed on your
+system, look for the copy of the `test_library.py` and
+`test_cli_interface.sh` scripts installed alongside the rest of the
+`metex` files and execute it. For example:
+
+``` bash
+python /usr/lib/python3.X/site-packages/metex/test/test_library.py
+/bin/bash /usr/lib/python3.X/site-packages/metex/test/test_cli_interface.sh
+```
 
 ## Usage (command line)
 
