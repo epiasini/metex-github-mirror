@@ -53,11 +53,11 @@ class Texture():
             this_sample = self._sample_gamma()
         elif param_id<=4:
             beta = self._get_param_list()[param_id]
-            if param_id in [1,2]:
+            if param_id == 1:
                 this_sample = self._sample_beta_horizontal(beta)
-                if param_id==2:
-                    this_sample = this_sample.T
-            if param_id in [3,4]:
+            elif param_id==2:
+                this_sample = self._sample_beta_vertical(beta)
+            elif param_id in [3,4]:
                 this_sample = self._sample_beta_diagonal(beta)
                 if param_id==4:
                     this_sample = this_sample[:,::-1]
@@ -80,24 +80,44 @@ class Texture():
         sample = np.random.rand(self.height, self.width)
         return sample < (1+self.gamma)/2
 
-    def _sample_beta_horizontal(self, beta):
-        sample = np.random.randint(2, size=(self.height,1)).astype(np.bool)
-        for j in range(1, self.width):
+    def _sample_beta_horizontal(self, beta, swap_dims=False):
+        """Generate sample for beta—
+        
+        The swap_dims argument is only used internally to generate
+        textures where height and width are swapped. This is necessary
+        to reuse this function to generate beta| textures too.
+
+        """
+        (height, width) = (self.height, self.width)
+        if swap_dims:
+            (height, width) = (width, height)
+        sample = np.random.randint(2, size=(height,1)).astype('bool')
+        for j in range(1, width):
             # the parity array tells us if the number of ones in a
             # given glider is even (in which case the corresponding
             # value of parity is False) or odd (in which case it's
             # True)
-            parity = np.random.rand(self.height, 1) > (1 + beta)/2
-            new_column = np.logical_xor(sample[:,j-1].reshape(self.height,1),parity)
+            parity = np.random.rand(height, 1) > (1 + beta)/2
+            new_column = np.logical_xor(sample[:,j-1].reshape(height,1),parity)
             sample = np.concatenate((sample, new_column), axis=1)
+        return sample
+
+    def _sample_beta_vertical(self, beta):
+        """Generate sample for beta|.
+
+        This is done by sampling for beta— for a texture with swapped
+        height and width, and then transposing the resulting array.
+
+        """
+        sample = self._sample_beta_horizontal(beta, swap_dims=True).T
         return sample
 
     def _sample_beta_diagonal(self, beta):
         """Generate sample for beta\ """
-        sample = np.random.randint(2, size=(self.height,1)).astype(np.bool)
+        sample = np.random.randint(2, size=(self.height,1)).astype('bool')
         for j in range(1, self.width):
             parity = np.random.rand(self.height-1, 1) > (1 + beta)/2
-            new_column = np.zeros((self.height,1), dtype=np.bool)
+            new_column = np.zeros((self.height,1), dtype='bool')
             new_column[0] = np.random.randint(2) # elements of the first row do not complete any glider, hence they are always generated randomly
             new_column[1:] = np.logical_xor(sample[:-1,j-1].reshape(self.height-1,1),parity)
             sample = np.concatenate((sample, new_column), axis=1)
@@ -105,7 +125,7 @@ class Texture():
 
     def _sample_theta(self, theta):
         """Generate sample for theta◿"""
-        sample = np.random.randint(2, size=(self.height,self.width)).astype(np.bool)
+        sample = np.random.randint(2, size=(self.height,self.width)).astype('bool')
         for j in range(1, self.width):
             for i in range(1, self.height):
                 parity = np.random.rand() > (1+theta)/2
@@ -113,7 +133,7 @@ class Texture():
         return sample
 
     def _sample_alpha(self):
-        sample = np.random.randint(2, size=(self.height,self.width)).astype(np.bool)
+        sample = np.random.randint(2, size=(self.height,self.width)).astype('bool')
         for j in range(1, self.width):
             for i in range(1, self.height):
                 parity = np.random.rand() > (1+self.alpha)/2
