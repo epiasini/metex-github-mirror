@@ -31,7 +31,7 @@ setup (name=NAME,
            "Development Status :: 4 - Beta",
            "Intended Audience :: Science/Research",
            "Topic :: Scientific/Engineering",
-           "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"
+           "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
            "Programming Language :: Python :: 3",
            "Operating System :: OS Independent",
            "Environment :: Console"           
