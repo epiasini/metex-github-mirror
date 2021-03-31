@@ -117,4 +117,12 @@ pretty-printing (for messing around).
 ⬛⬜⬜⬛⬜
 ⬜⬛⬜⬜⬛
 ```
-(the exact rendering of the texture will depend on your terminal)
+The exact rendering of the texture will depend on your terminal.
+
+
+## Changelog
+See the [CHANGELOG.md](CHANGELOG.md) file for a list of changes from
+older versions.
+
+## Authors
+`metex` is maintained by Eugenio Piasini.
