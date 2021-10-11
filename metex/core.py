@@ -23,7 +23,7 @@ import logging
 
 class Texture():
     def __init__(self, height, width=None, gamma=None, beta1=None, beta2=None, beta3=None, beta4=None,
-                 theta1=None, theta2=None, theta3=None, alpha=None):
+                 theta1=None, theta2=None, theta3=None, theta4=None, alpha=None):
 
         self.height = height
         if width is None:
@@ -33,13 +33,14 @@ class Texture():
             self.width = width
         
         self.gamma = gamma
-        self.beta1 = beta1
-        self.beta2 = beta2
-        self.beta3 = beta3
-        self.beta4 = beta4
-        self.theta1 = theta1
-        self.theta2 = theta2
-        self.theta3 = theta3
+        self.beta1 = beta1 # β—
+        self.beta2 = beta2 # β|
+        self.beta3 = beta3 # β\
+        self.beta4 = beta4 # β/
+        self.theta1 = theta1 # θ◢
+        self.theta2 = theta2 # θ◤
+        self.theta3 = theta3 # θ◥
+        self.theta4 = theta4 # θ◣
         self.alpha = alpha
 
         n_nonzero_params = sum([param is not None for param in self._get_param_list()])
@@ -79,15 +80,19 @@ class Texture():
                 if param_id==4:
                     this_sample = this_sample[:,::-1]
             return this_sample
-        elif param_id<=7:
+        elif param_id<=8:
             theta = self._get_param_list()[param_id]
+            # baseline is θ◢
             this_sample = self._sample_theta(theta)
             if param_id==6:
-                # this is the case theta◤
+                # this is the case θ◤
                 this_sample = this_sample[::-1,::-1]
             if param_id==7:
-                # this is theta◥
+                # this is θ◥
                 this_sample = this_sample[::-1,:]
+            if param_id==8:
+                # this is θ◣
+                this_sample = this_sample[:,::-1]
         else:
             this_sample = self._sample_alpha()
             
@@ -160,7 +165,7 @@ class Texture():
         
     def _get_param_list(self):
         return [self.gamma, self.beta1, self.beta2, self.beta3, self.beta4,
-                self.theta1, self.theta2, self.theta3, self.alpha]
+                self.theta1, self.theta2, self.theta3, self.theta4, self.alpha]
 
 
 class TextureSample(np.ndarray):

@@ -21,15 +21,16 @@ parser.add_argument('--log', type=str, help='Logging level', default='warning',
                     choices=['debug', 'info', 'warning', 'error', 'critical'])
 
 
-parser.add_argument('--gamma', metavar='gamma', type=float, nargs='?')
-parser.add_argument('--beta1', metavar='beta1', type=float, nargs='?')
-parser.add_argument('--beta2', metavar='beta2', type=float, nargs='?')
-parser.add_argument('--beta3', metavar='beta3', type=float, nargs='?')
-parser.add_argument('--beta4', metavar='beta4', type=float, nargs='?')
-parser.add_argument('--theta1', metavar='theta1', type=float, nargs='?')
-parser.add_argument('--theta2', metavar='theta2', type=float, nargs='?')
-parser.add_argument('--theta3', metavar='theta3', type=float, nargs='?')
-parser.add_argument('--alpha', metavar='alpha', type=float, nargs='?')
+parser.add_argument('--gamma', metavar='gamma', type=float, nargs='?', help='γ')
+parser.add_argument('--beta1', metavar='beta1', type=float, nargs='?', help='β—')
+parser.add_argument('--beta2', metavar='beta2', type=float, nargs='?', help='β|')
+parser.add_argument('--beta3', metavar='beta3', type=float, nargs='?', help='β\\')
+parser.add_argument('--beta4', metavar='beta4', type=float, nargs='?', help='β/')
+parser.add_argument('--theta1', metavar='theta1', type=float, nargs='?', help='θ◢')
+parser.add_argument('--theta2', metavar='theta2', type=float, nargs='?', help='θ◤')
+parser.add_argument('--theta3', metavar='theta3', type=float, nargs='?', help='θ◥')
+parser.add_argument('--theta4', metavar='theta4', type=float, nargs='?', help='θ◣')
+parser.add_argument('--alpha', metavar='alpha', type=float, nargs='?', help='α')
 
 args = parser.parse_args()
 
@@ -41,7 +42,8 @@ logging.basicConfig(level=numeric_loglevel, format='%(asctime)s:%(levelname)s: %
 texture = Texture(height=args.height, width=args.width,
                   gamma=args.gamma, beta1=args.beta1, beta2=args.beta2,
                   beta3=args.beta3, beta4=args.beta4, theta1=args.theta1,
-                  theta2=args.theta2, theta3=args.theta3, alpha=args.alpha)
+                  theta2=args.theta2, theta3=args.theta3, theta4=args.theta4,
+                  alpha=args.alpha)
 
 texture.generate_sample_batch(n_samples=args.n_samples,
                               folder=args.folder, prefix=args.prefix,
