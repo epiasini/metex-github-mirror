@@ -114,8 +114,8 @@ class Texture():
             # given glider is even (in which case the corresponding
             # value of parity is False) or odd (in which case it's
             # True)
-            parity = np.random.rand(height, 1) > (1 + beta)/2
-            new_column = np.logical_xor(sample[:,j-1].reshape(height,1),parity)
+            parity = np.random.rand(height, 1) < (1 + beta)/2
+            new_column = ~ np.logical_xor(sample[:,j-1].reshape(height,1),parity)
             sample = np.concatenate((sample, new_column), axis=1)
         return sample
 
@@ -133,10 +133,10 @@ class Texture():
         """Generate sample for beta\ """
         sample = np.random.randint(2, size=(self.height,1)).astype('bool')
         for j in range(1, self.width):
-            parity = np.random.rand(self.height-1, 1) > (1 + beta)/2
+            parity = np.random.rand(self.height-1, 1) < (1 + beta)/2
             new_column = np.zeros((self.height,1), dtype='bool')
             new_column[0] = np.random.randint(2) # elements of the first row do not complete any glider, hence they are always generated randomly
-            new_column[1:] = np.logical_xor(sample[:-1,j-1].reshape(self.height-1,1),parity)
+            new_column[1:] = ~ np.logical_xor(sample[:-1,j-1].reshape(self.height-1,1),parity)
             sample = np.concatenate((sample, new_column), axis=1)
         return sample
 
@@ -145,7 +145,7 @@ class Texture():
         sample = np.random.randint(2, size=(self.height,self.width)).astype('bool')
         for j in range(1, self.width):
             for i in range(1, self.height):
-                parity = np.random.rand() > (1+theta)/2
+                parity = np.random.rand() < (1+theta)/2
                 sample[i,j] = sample[i,j-1] ^ sample[i-1,j] ^ parity
         return sample
 
@@ -153,8 +153,8 @@ class Texture():
         sample = np.random.randint(2, size=(self.height,self.width)).astype('bool')
         for j in range(1, self.width):
             for i in range(1, self.height):
-                parity = np.random.rand() > (1+self.alpha)/2
-                sample[i,j] = sample[i,j-1] ^ sample[i-1,j-1] ^ sample[i-1,j] ^ parity
+                parity = np.random.rand() < (1+self.alpha)/2
+                sample[i,j] = ~ sample[i,j-1] ^ sample[i-1,j-1] ^ sample[i-1,j] ^ parity
         return sample
 
         
