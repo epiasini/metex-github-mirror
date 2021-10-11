@@ -48,7 +48,7 @@ metex 10
 ```
 
 Save 10 samples of a 100x150 texture in folder named 'fig', with
-parameter 'alpha' set to -0.6. Name each sample 'fig_[n].jpg', where
+parameter 'alpha' set to -0.6. Name each sample 'fig_[n].png', where
 [n] takes on values 0,...,9:
 
 ```bash

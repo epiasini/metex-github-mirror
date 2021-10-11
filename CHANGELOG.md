@@ -5,6 +5,16 @@ The format is based on [Keep a
 Changelog](https://keepachangelog.com/en/1.0.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2021-10-11
+### Added
+- Support for θ◣ ('theta4') statistic.
+### Fixed
+- Orient theta axis correctly according to usual convention as per
+  Victor and Conte 2012. Previously, the orientation of this axis was
+  reversed (i.e., positive values of a theta value would yield
+  textures corresponding to a negative value per Victor and Conte's
+  convention).
+
 ## [1.0.0] - 2021-03-31
 ### Added
 - This changelog.
