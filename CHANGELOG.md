@@ -5,6 +5,11 @@ The format is based on [Keep a
 Changelog](https://keepachangelog.com/en/1.0.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- CITATION.cff, according to [recommendation #
+  4](https://fair-software.eu/recommendations/citation) of the FAIR guidelines.
+
 ## [1.1.0] - 2021-10-11
 ### Added
 - Support for θ◣ ('theta4') statistic.

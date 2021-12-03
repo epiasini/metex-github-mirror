@@ -1,0 +1,36 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: metex
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Eugenio
+    family-names: Piasini
+    email: epiasini@sissa.it
+    affiliation: >-
+      International School for Advanced Studies
+      (SISSA)
+    orcid: 'https://orcid.org/0000-0003-0384-7699'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.5561807
+repository-code: 'https://gitlab.com/epiasini/metex'
+repository: 'https://pypi.python.org/pypi/metex'
+abstract: >+
+  Utilities for generating maximum entropy textures,
+  according to Victor and Conte 2012. Metex can be
+  used as a standalone software from the command
+  line, or as a Python package to generate and
+  manipulate textures.
+
+keywords:
+  - texture-synthesis
+  - maximum-entropy
+  - python
+license: GPL-3.0-or-later
+version: 1.1.0
+date-released: '2021-10-11'
