@@ -7,6 +7,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 ### Added
+- Support for accessing version number at runtime via `metex.__version__`.
+
 - CITATION.cff, according to [recommendation #
   4](https://fair-software.eu/recommendations/citation) of the FAIR guidelines.
 

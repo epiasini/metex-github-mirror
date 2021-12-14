@@ -1,5 +1,4 @@
 include LICENSE
 include CHANGELOG.md
-include metex/VERSION
 include tox.ini
 include metex/test/test_cli_interface.sh
